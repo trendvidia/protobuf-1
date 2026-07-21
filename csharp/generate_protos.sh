@@ -44,6 +44,8 @@ $PROTOC -Isrc --csharp_out=csharp/src/Google.Protobuf \
     src/google/protobuf/timestamp.proto \
     src/google/protobuf/type.proto \
     src/google/protobuf/wrappers.proto \
+    src/google/protobuf/json_options.proto \
+    src/google/protobuf/json_enumvalue_options.proto \
     src/google/protobuf/compiler/plugin.proto
 
 # C# features

@@ -121,6 +121,8 @@ internal_gen_well_known_protos_java(
     name = "gen_well_known_protos_javalite",
     javalite = True,
     deps = [
+        # TODO Replace this list with //src/google/protobuf:release_all_options_protos
+        # once `internal_gen_well_known_protos_java` handles proxy `proto_library` rules
         "//:any_proto",
         "//:api_proto",
         "//:descriptor_proto",
@@ -128,6 +130,8 @@ internal_gen_well_known_protos_java(
         "//:empty_proto",
         "//:field_mask_proto",
         "//:java_features_proto",
+        "//:json_enumvalue_options_proto",
+        "//:json_options_proto",
         "//:source_context_proto",
         "//:struct_proto",
         "//:timestamp_proto",
@@ -193,7 +197,7 @@ proto_library(
         "//:__pkg__",
         "//editions:__pkg__",
         "//java/__subpackages__",
-        "//pkg:__pkg__",
+        "//src/google/protobuf:__pkg__",
     ],
     deps = ["//:descriptor_proto"],
 )
@@ -211,8 +215,8 @@ filegroup(
     name = "java_features_proto_srcs",
     srcs = ["src/main/resources/google/protobuf/java_features.proto"],
     visibility = [
-        "//pkg:__pkg__",
         "//python:__pkg__",
+        "//src/google/protobuf:__pkg__",
     ],
 )
 
@@ -245,14 +249,18 @@ staleness_test(
 internal_gen_well_known_protos_java(
     name = "gen_well_known_protos_java",
     deps = [
+        "//:compiler_plugin_proto",
+        # TODO Replace all below with //src/google/protobuf:release_all_options_protos
+        # once `internal_gen_well_known_protos_java` handles proxy `proto_library` rules
         "//:any_proto",
         "//:api_proto",
-        "//:compiler_plugin_proto",
         "//:descriptor_proto",
         "//:duration_proto",
         "//:empty_proto",
         "//:field_mask_proto",
         "//:java_features_proto",
+        "//:json_enumvalue_options_proto",
+        "//:json_options_proto",
         "//:source_context_proto",
         "//:struct_proto",
         "//:timestamp_proto",
@@ -293,6 +301,8 @@ protobuf_java_export(
     pom_template = "pom_template.xml",
     resources = [
         ":java_features_proto_srcs",
+        "//:json_enumvalue_options_proto",
+        "//:json_options_proto",
         "//:well_known_type_protos",
         "//src/google/protobuf:descriptor_proto_srcs",
     ],
