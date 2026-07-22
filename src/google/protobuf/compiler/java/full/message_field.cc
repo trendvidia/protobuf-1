@@ -112,9 +112,6 @@ int ImmutableMessageFieldGenerator::GetBuilderBitIndex() const {
   return builder_bit_index_;
 }
 
-int ImmutableMessageFieldGenerator::GetNumBitsForMessage() const {
-  return HasHasbit(descriptor_) ? 1 : 0;
-}
 
 void ImmutableMessageFieldGenerator::GenerateInterfaceMembers(
     io::Printer* printer) const {
@@ -769,9 +766,6 @@ RepeatedImmutableMessageFieldGenerator::RepeatedImmutableMessageFieldGenerator(
 RepeatedImmutableMessageFieldGenerator::
     ~RepeatedImmutableMessageFieldGenerator() = default;
 
-int RepeatedImmutableMessageFieldGenerator::GetNumBitsForMessage() const {
-  return 0;
-}
 
 void RepeatedImmutableMessageFieldGenerator::GenerateInterfaceMembers(
     io::Printer* printer) const {

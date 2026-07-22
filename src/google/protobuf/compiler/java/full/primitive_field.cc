@@ -213,10 +213,6 @@ int ImmutablePrimitiveFieldGenerator::GetBuilderBitIndex() const {
   return builder_bit_index_;
 }
 
-int ImmutablePrimitiveFieldGenerator::GetNumBitsForMessage() const {
-  return HasHasbit(descriptor_) ? 1 : 0;
-}
-
 void ImmutablePrimitiveFieldGenerator::GenerateInterfaceMembers(
     io::Printer* printer) const {
   if (descriptor_->has_presence()) {
@@ -579,7 +575,7 @@ void ImmutablePrimitiveOneofFieldGenerator::GenerateBuilderClearCode(
 
 void ImmutablePrimitiveOneofFieldGenerator::GenerateBuildingCode(
     io::Printer* printer) const {
-  // no-op
+  // No-Op: Handled by single block statement in GenerateBuildPartialShard.
 }
 
 void ImmutablePrimitiveOneofFieldGenerator::GenerateMergingCode(
@@ -642,10 +638,6 @@ RepeatedImmutablePrimitiveFieldGenerator::
 
 RepeatedImmutablePrimitiveFieldGenerator::
     ~RepeatedImmutablePrimitiveFieldGenerator() = default;
-
-int RepeatedImmutablePrimitiveFieldGenerator::GetNumBitsForMessage() const {
-  return 0;
-}
 
 void RepeatedImmutablePrimitiveFieldGenerator::GenerateInterfaceMembers(
     io::Printer* printer) const {

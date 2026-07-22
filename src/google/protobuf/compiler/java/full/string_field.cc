@@ -126,9 +126,6 @@ int ImmutableStringFieldGenerator::GetBuilderBitIndex() const {
   return builder_bit_index_;
 }
 
-int ImmutableStringFieldGenerator::GetNumBitsForMessage() const {
-  return HasHasbit(descriptor_) ? 1 : 0;
-}
 
 // A note about how strings are handled. This code used to just store a String
 // in the Message. This had two issues:
@@ -660,7 +657,7 @@ void ImmutableStringOneofFieldGenerator::GenerateMergingCode(
 
 void ImmutableStringOneofFieldGenerator::GenerateBuildingCode(
     io::Printer* printer) const {
-  // No-Op: oneof fields are built by a single statement
+  // No-Op: Handled by single block statement in GenerateBuildPartialShard.
 }
 
 void ImmutableStringOneofFieldGenerator::GenerateBuilderParsingCode(
@@ -706,9 +703,6 @@ RepeatedImmutableStringFieldGenerator::RepeatedImmutableStringFieldGenerator(
 RepeatedImmutableStringFieldGenerator::
     ~RepeatedImmutableStringFieldGenerator() = default;
 
-int RepeatedImmutableStringFieldGenerator::GetNumBitsForMessage() const {
-  return 0;
-}
 
 void RepeatedImmutableStringFieldGenerator::GenerateInterfaceMembers(
     io::Printer* printer) const {

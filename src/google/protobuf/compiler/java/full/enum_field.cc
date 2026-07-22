@@ -129,10 +129,6 @@ int ImmutableEnumFieldGenerator::GetBuilderBitIndex() const {
   return builder_bit_index_;
 }
 
-int ImmutableEnumFieldGenerator::GetNumBitsForMessage() const {
-  return HasHasbit(descriptor_) ? 1 : 0;
-}
-
 void ImmutableEnumFieldGenerator::GenerateInterfaceMembers(
     io::Printer* printer) const {
   if (descriptor_->has_presence()) {
@@ -497,7 +493,7 @@ void ImmutableEnumOneofFieldGenerator::GenerateBuilderClearCode(
 
 void ImmutableEnumOneofFieldGenerator::GenerateBuildingCode(
     io::Printer* printer) const {
-  // No-Op: Handled by single statement for the oneof
+  // No-Op: Handled by single block statement in GenerateBuildPartialShard.
 }
 
 void ImmutableEnumOneofFieldGenerator::GenerateMergingCode(
@@ -591,10 +587,6 @@ RepeatedImmutableEnumFieldGenerator::RepeatedImmutableEnumFieldGenerator(
 
 RepeatedImmutableEnumFieldGenerator::~RepeatedImmutableEnumFieldGenerator() =
     default;
-
-int RepeatedImmutableEnumFieldGenerator::GetNumBitsForMessage() const {
-  return 0;
-}
 
 void RepeatedImmutableEnumFieldGenerator::GenerateInterfaceMembers(
     io::Printer* printer) const {

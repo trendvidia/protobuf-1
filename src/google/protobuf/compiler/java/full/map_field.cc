@@ -183,8 +183,6 @@ int ImmutableMapFieldGenerator::GetBuilderBitIndex() const {
   return builder_bit_index_;
 }
 
-int ImmutableMapFieldGenerator::GetNumBitsForMessage() const { return 0; }
-
 void ImmutableMapFieldGenerator::GenerateInterfaceMembers(
     io::Printer* printer) const {
   WriteFieldDocComment(printer, descriptor_, context_->options());
