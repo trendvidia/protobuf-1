@@ -28,6 +28,7 @@
 #include "google/protobuf/descriptor.pb.h"
 #include "google/protobuf/io/printer.h"
 #include "google/protobuf/io/zero_copy_stream.h"
+#include "google/protobuf/json_enumvalue_options.pb.h"
 
 constexpr absl::string_view kDescriptorFile =
     "google/protobuf/descriptor.proto";
@@ -1296,6 +1297,16 @@ bool GenerateEnumFile(const FileDescriptor* file, const EnumDescriptor* en,
                           ".  Please use either proto3 or editions without "
                           "`enum_type = CLOSED`.\n");
     return false;
+  }
+  for (int i = 0; i < en->value_count(); i++) {
+    const EnumValueDescriptor* value = en->value(i);
+    const EnumValueOptions& options = value->options();
+    if (options.HasExtension(pb::enumvalue::json)) {
+      *error =
+          absl::StrCat("Can't generate PHP code for enum value with custom ",
+                       "JSON name.\n");
+      return false;
+    }
   }
 
   std::string filename = GeneratedClassFileName(en, options);

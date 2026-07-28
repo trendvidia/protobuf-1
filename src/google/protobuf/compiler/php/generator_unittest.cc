@@ -11,6 +11,7 @@
 #include <gtest/gtest.h>
 #include "google/protobuf/compiler/command_line_interface_tester.h"
 #include "google/protobuf/compiler/php/php_generator.h"
+#include "google/protobuf/json_enumvalue_options.pb.h"
 
 namespace google {
 namespace protobuf {
@@ -28,6 +29,12 @@ class PhpGeneratorTest : public CommandLineInterfaceTester {
     CreateTempFile(
         "google/protobuf/descriptor.proto",
         google::protobuf::DescriptorProto::descriptor()->file()->DebugString());
+
+    CreateTempFile(
+        "google/protobuf/json_enumvalue_options.proto",
+        pb::enumvalue::JsonEnumValueOptions::descriptor()
+            ->file()
+            ->DebugString());
   }
 };
 
@@ -133,6 +140,43 @@ TEST_F(PhpGeneratorTest, ImportPublic) {
   RunProtoc(
       "protocol_compiler --proto_path=$tmpdir --php_out=$tmpdir "
       "common.proto prototest.proto usecase.proto");
+
+  ExpectNoErrors();
+}
+
+TEST_F(PhpGeneratorTest, CustomJsonEnumValueError) {
+  CreateTempFile(
+      "foo.proto",
+      R"schema(
+    edition = "2026";
+)schema"
+#ifdef PROTO2_OPENSOURCE
+      R"schema(import "google/protobuf/json_enumvalue_options.proto";)schema"
+#else
+      R"schema(import "google/protobuf/json_enumvalue_options.proto";)schema"
+#endif
+      R"schema(
+    enum Foo {
+      BAR = 0 [(pb.enumvalue.json).string = "custom_bar"];
+    })schema");
+
+  RunProtoc(
+      "protocol_compiler --proto_path=$tmpdir --php_out=$tmpdir foo.proto");
+
+  ExpectErrorSubstring(
+      "Can't generate PHP code for enum value with custom JSON name");
+}
+
+TEST_F(PhpGeneratorTest, CustomJsonEnumValueNotSet) {
+  CreateTempFile("foo.proto",
+                 R"schema(
+    edition = "2026";
+    enum Foo {
+      BAR = 0;
+    })schema");
+
+  RunProtoc(
+      "protocol_compiler --proto_path=$tmpdir --php_out=$tmpdir foo.proto");
 
   ExpectNoErrors();
 }
