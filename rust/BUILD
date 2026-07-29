@@ -44,6 +44,13 @@ rust_library(
     }),
 )
 
+# This is another name for `:protobuf`, especially compared to `:protobuf_full`.
+alias(
+    name = "protobuf_lite",
+    actual = ":protobuf",
+    visibility = ["//visibility:public"],
+)
+
 # This list contains kernel-agnostic logic and simple kernel-specific logic controlled by
 # `#[cfg(...)]` attributes. That forces us to compile these files twice, once for each kernel. As a
 # result these files are included in both `:protobuf_upb` and `:protobuf_cpp`.
